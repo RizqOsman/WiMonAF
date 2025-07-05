@@ -1,101 +1,77 @@
-
 # WiMonAF - Wireless Monitor & Auth Flood
 **by Rizq Osman**
 
-WiMonAF adalah tool berbasis Python untuk melakukan pemantauan client dan serangan *Authentication Flood* terhadap Access Point (AP) Wi-Fi. Cocok digunakan untuk pengujian penetrasi jaringan nirkabel dan analisis kekuatan keamanan AP.
+WiMonAF is a Python-based tool designed to monitor clients and perform *Authentication Flood* attacks on Wi-Fi Access Points (APs). It is ideal for wireless network penetration testing and analyzing the security strength of APs.
 
 ---
 
-## ✨ Fitur
-- 🔍 Auto-scan SSID & BSSID dari jaringan terdekat
-- 📡 Monitoring client yang mencoba terkoneksi ke AP target
-- 💣 Auth Flood menggunakan `mdk4`
-- 💥 Deauth Attack (opsional jika PMF nonaktif)
-- 📈 Statistik real-time jumlah paket & client terdeteksi
-- 🔁 Auto restart `mdk4` jika berhenti tiba-tiba
-- 📝 Logging aktivitas ke file log otomatis
-- ⚙️ Dukungan CLI argument untuk fleksibilitas pengguna
+## ✨ Features
+- 🔍 Automatic SSID & BSSID scanning of nearby networks
+- 📡 Real-time monitoring of clients attempting to connect to the target AP
+- 💣 Authentication Flood attack using `mdk4`
+- 💥 Deauthentication Attack (optional if PMF is disabled)
+- 📈 Real-time statistics for packet count and detected clients
+- 🔁 Auto-restart `mdk4` if it stops unexpectedly
+- 📝 Automatic activity logging to a log file
+- ⚙️ CLI argument support for flexible usage
 
 ---
 
-## ⚙️ Instalasi
+## ⚙️ Installation
 
-### 1. Install Dependensi Sistem
+### 1. Install System Dependencies
 ```bash
 sudo apt update
 sudo apt install -y python3 python3-pip aircrack-ng mdk4 net-tools
 ```
-
-### 2. Install Modul Python
+## 2. Install Python Modules
 ```bash
 pip3 install scapy
 ```
+## 3. Enable Monitor Mode 
 
-### 3. Aktifkan Monitor Mode
-Gunakan interface Wi-Fi kamu (contoh: `wlan0`) dan ubah ke mode monitor:
+Use your Wi-Fi interface (e.g., wlan0) and switch it to monitor mode: 
 ```bash
-sudo airmon-ng start wlan0
-# Interface akan berubah menjadi wlan0mon (tergantung sistem)
+sudo airmon-ng start <yourinterface>
 ```
-
----
-
-## 🚀 Cara Menjalankan
-
-### Scan Otomatis SSID & BSSID (mode interaktif)
+## 🚀 How to Run 
+Automatic SSID & BSSID Scan (Interactive Mode) 
 ```bash
 sudo python3 wimonaf.py -i wlan0mon
 ```
-
-### Menentukan Target Manual (tanpa scan)
-```bash
-sudo python3 wimonaf.py -i wlan0mon -b 94:83:C4:50:38:0C -s "NamaSSID"
+Manual Target Specification (Without Scanning)
 ```
-
-### Mode Deauth (opsional jika target tidak pakai PMF)
-```bash
-sudo python3 wimonaf.py -i wlan0mon -b XX:XX:XX:XX:XX:XX -s "SSID Target" --deauth
+sudo python3 wimonaf.py -i wlan0mon -b 94:83:C4:50:38:0C -s "TargetSSID"
 ```
-
-### Tampilkan Versi
+Deauthentication Mode (Optional if PMF is Disabled)
+```bash
+sudo python3 wimonaf.py -i wlan0mon -b XX:XX:XX:XX:XX:XX -s "TargetSSID" --deauth
+```
+Display Version
 ```bash
 sudo python3 wimonaf.py --version
 ```
+## 📁 Output 
 
----
-
-## 📁 Output
-- Semua aktivitas dicatat otomatis ke file:
-  ```
-  authlog_YYYYMMDD_HHMMSS.txt
-  ```
-
----
-
-## ⚠️ Catatan Penting
-- Tool ini hanya untuk **pengujian keamanan jaringan pribadi**.
-- Jangan digunakan terhadap jaringan tanpa izin, karena melanggar hukum di banyak negara.
-- Pastikan adapter Wi-Fi kamu mendukung **monitor mode** dan **packet injection**.
-
----
-
-## 📊 Contoh Output
-```
-[*] Monitoring client yang mencoba konek ke SSID target...
-[Client] 78:E3:5D:D4:9B:E4 mencoba konek ke SSID 'Workshop 08'
-[+] Total client terdeteksi: 4
-
-[*] mdk4 masih berjalan | Total paket dikirim: 8000
-[!] mdk4 berhenti, mencoba ulang dalam 3 detik...
+    All activities are automatically logged to a file:
+```bash
+authlog_YYYYMMDD_HHMMSS.txt
 ```
 
----
+## ⚠️ Important Notes 
 
-## 👤 Penulis
-**Nama**: Rizq Osman  
-**Tools**: Python, Scapy, mdk4  
-**Lisensi**: Open Source (MIT)
+    This tool is intended for personal network security testing only .
+    Do not use it on networks without permission, as it may violate laws in many countries.
+    Ensure your Wi-Fi adapter supports monitor mode  and packet injection .
+     
 
----
+ 
+📊 Example Output 
+```bash
+[*] Monitoring clients attempting to connect to the target SSID...
+[Client] 78:E3:5D:D4:9B:E4 is trying to connect to SSID 'Workshop 08'
+[+] Total clients detected: 4
 
-> Gunakan dengan bijak. Edukasi adalah tujuan utama.
+[*] mdk4 is running | Total packets sent: 8000
+[!] mdk4 has stopped, retrying in 3 seconds...
+```
